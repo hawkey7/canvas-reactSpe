@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	*{
+		margin: 0;
+		padding:0;
+	}
+	body{
+		background-color: black
+	}
+	canvas{
+		background: #fff;
+	}
+	</style>
+</head>
+<body>
+	<canvas id="c1" width="220" height="283"></canvas>
+
+</body>
+</html>
+<script>
+	function rand(n,m){
+		return Math.floor( Math.random()*(m-n+1)+n);
+	}
+	var oC= document.querySelector("#c1");
+	var ctx = oC.getContext('2d');
+
+
+	//画单身狗框
+	ctx.lineWidth=2;
+	ctx.beginPath();
+	ctx.fillStyle='#39EC35';
+	ctx.moveTo(51,184);
+	ctx.lineTo(6,185);
+	ctx.lineTo(10,267);
+	ctx.lineTo(208,265);
+	ctx.lineTo(201,181);
+	ctx.lineTo(169,180);
+	ctx.stroke();
+	ctx.fill()
+
+	//补充头部涂色
+	ctx.fillStyle='#F3D16D';
+	ctx.beginPath();
+	ctx.moveTo(53,162);
+	ctx.lineTo(108,201);
+	ctx.lineTo(179,160);
+	ctx.lineTo(179,160);
+	ctx.lineTo(74,38);
+	ctx.fill();
+
+	//补充下部涂色
+	ctx.beginPath();
+	ctx.moveTo(95,205);
+	ctx.lineTo(104,184);
+	ctx.lineTo(69,173);
+	ctx.lineTo(73,191);
+	ctx.lineTo(92,202);
+	ctx.closePath();
+	ctx.fill();
+	
+
+	ctx.strokeStyle="black";
+	ctx.fillStyle='#F3D16D';
+	//眼睛 和轮廓
+	ctx.lineWidth=2;
+	//眼睛轮廓完毕,从头开始
+	ctx.beginPath()
+	ctx.moveTo(68,37);
+	ctx.quadraticCurveTo(53,9,67,9);
+	ctx.quadraticCurveTo(70,8,89,35);
+	ctx.quadraticCurveTo(102,33,107,35);
+	ctx.quadraticCurveTo(118,37,129,40);
+	ctx.quadraticCurveTo(154,13,155,16);
+	ctx.quadraticCurveTo(163,16,163,59);
+	ctx.quadraticCurveTo(176,68,172,78);
+	ctx.quadraticCurveTo(186,113,181,141);
+	ctx.quadraticCurveTo(186,117,186,181);
+	ctx.moveTo(74,35);
+	ctx.quadraticCurveTo(64,42,62,51);
+	ctx.quadraticCurveTo(45,57,44,73);
+	ctx.quadraticCurveTo(25,129,63,159);
+	ctx.moveTo(53,154);
+	ctx.quadraticCurveTo(44,186,70,196);
+	ctx.quadraticCurveTo(82,193,87,196);
+	ctx.moveTo(69,171);
+	ctx.quadraticCurveTo(94,172,97,178);
+	ctx.moveTo(143,169);
+	ctx.quadraticCurveTo(98,169,86,197);
+	ctx.moveTo(91,193);
+	ctx.quadraticCurveTo(85,204,93,203);
+	ctx.moveTo(98,197);
+	ctx.quadraticCurveTo(91,204,103,204);
+	ctx.quadraticCurveTo(114,199,120,193);
+	ctx.quadraticCurveTo(152,201,173,168);
+	ctx.quadraticCurveTo(177,155,172,152);
+	ctx.moveTo(119,194);
+	ctx.quadraticCurveTo(125,205,118,202);
+	ctx.quadraticCurveTo(130,205,113,205);
+	ctx.quadraticCurveTo(116,213,103,204);
+	//右侧耳朵
+	ctx.moveTo(150,48);
+	ctx.quadraticCurveTo(140,46,149,33);
+	ctx.quadraticCurveTo(140,46,149,33);
+	ctx.quadraticCurveTo(145,40,144,43);
+	ctx.closePath()
+	//眼睛轮廓
+	
+	ctx.stroke()
+	ctx.fill()
+	ctx.beginPath()
+	ctx.fillStyle='white';
+	ctx.moveTo(55,78);
+	ctx.quadraticCurveTo(71,66,78,82);
+	ctx.quadraticCurveTo(62,91,55,78);
+	ctx.moveTo(103,87);
+	ctx.quadraticCurveTo(119,69,137,85);
+	ctx.quadraticCurveTo(122,96,103,87);
+	ctx.stroke();
+	ctx.fill()
+	//眼睛
+	ctx.beginPath();
+	ctx.moveTo(68,71);
+	ctx.fillStyle="black"
+	ctx.quadraticCurveTo(62,79,65,88);
+	ctx.quadraticCurveTo(78,86,75,73);
+	ctx.closePath()
+	ctx.fill();
+	ctx.fillStyle="white";
+	ctx.fillRect(67,76,2,3)
+	//右侧眼睛
+	ctx.beginPath();
+	ctx.moveTo(121,92);
+	ctx.fillStyle="black"
+	ctx.quadraticCurveTo(114,86,118,76);
+	ctx.quadraticCurveTo(132,76,134,87);
+	ctx.closePath()
+	ctx.fill();
+	ctx.fillStyle="white";
+	ctx.fillRect(121,79,2,3)
+	//鼻子
+	ctx.beginPath();
+	ctx.moveTo(67,118);
+	ctx.fillStyle="black"
+	ctx.quadraticCurveTo(56,109,57,103);
+	ctx.quadraticCurveTo(70,94,84,106);
+	ctx.quadraticCurveTo(82,119,68,119);
+	ctx.closePath()
+	ctx.fill();
+	ctx.fillStyle="white";
+	ctx.fillRect(62,103,10,2)
+	//嘴巴
+	ctx.beginPath();
+	ctx.moveTo(103,120);
+	ctx.fillStyle="black"
+	ctx.quadraticCurveTo(64,135,57,119);
+	ctx.lineTo(63,120);
+	ctx.quadraticCurveTo(68,120,83,125);
+	ctx.quadraticCurveTo(98,123,103,120);
+	ctx.fill();
+	ctx.fillStyle="white";
+	ctx.fillRect(62,103,10,2);
+	//胡须
+	ctx.lineWidth=1;
+	ctx.beginPath();
+	ctx.moveTo(57,107);
+	ctx.quadraticCurveTo(48,99,35,99);
+	ctx.moveTo(53,112);
+	ctx.quadraticCurveTo(44,111,36,118);
+	ctx.moveTo(55,119);
+	ctx.quadraticCurveTo(49,120,43,128);
+	ctx.moveTo(93,111);
+	ctx.quadraticCurveTo(110,106,123,111);
+	ctx.moveTo(92,115);
+	ctx.quadraticCurveTo(104,119,111,127);
+	ctx.moveTo(90,123);
+	ctx.quadraticCurveTo(97,128,99,133);
+	ctx.stroke();
+	//胡渣
+	ctx.fillStyle="black"
+	ctx.fillRect(89,114,2,2);
+	ctx.fillRect(90,114,2,2);
+	ctx.fillRect(84,112,2,2);
+	ctx.fillRect(76,121,2,2);
+	ctx.fillRect(72,121,2,2);
+	ctx.fillRect(70,121,2,2);
+	ctx.fillRect(68,117,2,2);
+	ctx.fillRect(59,121,2,2);
+	ctx.fillRect(67,121,2,2);
+
+	//写字
+	ctx.font='30px 黑体'
+	ctx.textAlign='left';
+	ctx.textBaseline='top';
+	ctx.fillText('我叫单身狗',30,207);
+	ctx.stroke();
+
+</script>

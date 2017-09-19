@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>66</title>
+	<style type="text/css">
+	*{
+		margin: 0 ;
+		padding:0;
+	}
+	html,body{
+		background: #000;
+		overflow: hidden;
+	}
+	canvas{
+		/*background: #fff;*/	
+	}
+
+	</style>
+</head>
+<body>
+	<canvas id="c1"></canvas>
+</body>
+</html>
+<script>
+window.onload = function(){
+	var oC = document.querySelector('#c1');
+	var ctx = oC.getContext('2d')
+	var winw = document.documentElement.clientWidth;
+	var winh = document.documentElement.clientHeight;
+
+	function rand(n,m){
+		return Math.floor( Math.random()*(m-n+1)+n);
+	}
+	function changeCol(){
+		ctx.strokeStyle = `rgb( ${rand(0,255)},${rand(0,255)},${rand(0,255)})`;
+	}
+
+
+
+	/*渲染*/
+	oC.width=winw;
+	oC.height=winh;
+
+	/*取得一维点*/
+	var N1 = 5;// 多少个点
+	var N2 = 20;
+	var oldArr=[] //尾巴数组
+	var aPos = [];
+	var g = 1;
+	for ( var i = 0 ; i < N1 ; i++ ){ //点的位置
+		aPos[i]= {
+			x:rand(0,oC.width),
+			y:rand(0,oC.height),
+			speedX:5,
+			speedY:5
+		}
+	}
+	var jbCol = [255,255,100]
+	var colRate = 1 ;
+
+	// alert(  typeof aPos[0].speedY)
+	/*一维点的连接*/	
+
+	function drawPoint(p){
+	  //p 点信息 {x,y,iSpeedX,iSpeedY}
+	  var pW=0;
+	  var pH=0;
+	  ctx.fillStyle='#fff';
+	  ctx.fillRect(p.x-pW/2, p.y-pH/2,pW,pH);
+	}
+
+	
+	var timer = setInterval(function(){
+		ctx.clearRect(0,0,oC.width, oC.height);
+		for ( var i = 0 ; i < N1 ; i++ ){
+			if( aPos[i].speedX > 15  ){
+				g = -0.1;
+			}else if( aPos[i].speedX < -15   ){
+				g = 0.1;
+			}else if ( aPos[i].speedX >-15 && aPos[i].speedX < 15 ){
+
+			}
+			aPos[i].speedX += g;
+			aPos[i].x += aPos[i].speedX;
+			aPos[i].y += aPos[i].speedY;
+
+			if(aPos[i].x<=0){
+			  aPos[i].x=0;
+			  aPos[i].speedX*=-1;
+			}
+			if(aPos[i].x>=winw){
+			  aPos[i].x=winw;
+			  aPos[i].speedX*=-1;
+			}
+			if(aPos[i].y>=winh){
+			  aPos[i].y=winh;
+			  aPos[i].speedY*=-1;
+			}
+			if(aPos[i].y<=0){
+			  aPos[i].y=0;
+			  aPos[i].speedY*=-1;
+			}
+			drawPoint( aPos[i] )
+		}
+
+		//画线
+		ctx.beginPath()
+		// changeCol();
+		ctx.strokeStyle = 'white';
+		ctx.moveTo( aPos[0].x , aPos[0].y );
+		for( var j = 1 ; j < N1 ; j++ ){
+			ctx.lineTo( aPos[j].x , aPos[j].y );
+		}
+		ctx.closePath();
+		ctx.stroke();
+
+		//每条的尾巴的坐标
+		var arr = [];
+		for(var k = 0 ; k < aPos.length ; k++){
+			arr[k] = {
+				x:aPos[k].x,
+				y:aPos[k].y
+			}
+			// console.log(arr[k])
+		}  
+		oldArr.push(arr);
+		if( oldArr.length > N2 ){
+			oldArr.shift();
+		}
+
+		//绘制尾巴
+
+		for ( var k = 1 ; k < jbCol.length ; k++ ){
+			if( jbCol[k] > 255 ){
+				colRate = -k;
+			}else if ( jbCol[k] < 0 ){
+				colRate = 3*k;
+			}
+			jbCol[k] += colRate
+		}
+
+		// console.log(jbCol)
+		for ( var i= 0; i < oldArr.length ; i++ ){
+			ctx.beginPath();
+			var opacity = (i/oldArr.length).toFixed(2);
+			// changeCol();
+			ctx.strokeStyle = 'rgba('+ (jbCol[0])  +','+ (jbCol[1])  +','+ (jbCol[2]) +','+ opacity +')';
+			
+			ctx.moveTo( oldArr[i][0].x , oldArr[i][0].y );
+			for ( var j = 0 ; j < arr.length ; j++ ){
+				ctx.lineTo( oldArr[i][j].x , oldArr[i][j].y );
+			}
+			ctx.closePath();
+			ctx.stroke();
+		}
+	},16)
+
+
+
+
+}
+</script>

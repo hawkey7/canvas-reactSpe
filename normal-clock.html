@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	*{
+		margin: 0;
+		padding:0;
+	}
+	body{
+		background-color: black
+	}
+	canvas{
+		background: #fff;
+	}
+	</style>
+</head>
+<body>
+	<canvas id="c1" width="800" height="600"></canvas>
+
+</body>
+</html>
+<script>
+	function rand(n,m){
+		return Math.floor( Math.random()*(m-n+1)+n);
+	}
+	function d2r(d){
+		return d*Math.PI/180 ;
+	}
+	function r2d(d){
+		return d*180/Math.PI ;
+	}
+	function addZero(x){
+		return x>=10 ? x : "0"+x;
+	}
+	var oC= document.querySelector("#c1");
+	var ctx = oC.getContext('2d');
+
+
+
+	function paintClock(end,r,color,size){
+		ctx.beginPath();
+		ctx.strokeStyle = color ;
+		ctx.lineWidth = size ;
+		end = end + 90;
+		end = -end;
+		// ctx.arc(200,200,r,d2r(-90),d2r(end),false);
+		ctx.moveTo(200,200)
+		ctx.lineTo(200-r * Math.cos( end*Math.PI/180 ),200+r * Math.sin( end*Math.PI/180 )  )
+		ctx.stroke();
+	}
+	
+
+	//打底指针
+	function dadi(end,ratio){
+		ctx.beginPath();
+		ctx.strokeStyle = '#999' ;
+		ctx.lineWidth = '3' ;
+		end = end + 90;
+		end = -end;
+		r = 180;
+		var x = 200-r * Math.cos( end*Math.PI/180)
+		var y = 200+r * Math.sin( end*Math.PI/180 )
+		ctx.moveTo( 200+(x-200)*ratio ,200+(y-200)*ratio )
+		ctx.lineTo( x,y  )
+		ctx.stroke();
+	}
+
+	function dadiFont( end,font,ratio ){
+		ctx.beginPath();
+		ctx.font = '20px 黑体';
+		end = -end;
+		end = end - 90;
+		var x = 200-r * Math.cos( end*Math.PI/180)
+		var y = 200+r * Math.sin( end*Math.PI/180 )
+		var _x = 200+(x-200)*ratio;
+		var _y = 200+(y-200)*ratio;
+		ctx.textAlign = 'center';
+		ctx.textBaseline='middle';
+		ctx.fillText( font,_x,_y );
+	}
+
+	var timer = setInterval(calTime,16)
+	calTime()
+	function calTime(){
+		var now = new Date();
+		var h = now.getHours();
+		var m = now.getMinutes();
+		var s = now.getSeconds();
+		var ms = now.getMilliseconds();
+		//清除画布
+		ctx.clearRect(0,0,oC.width,oC.height);
+		//打底
+		ctx.beginPath();
+		ctx.lineWidth='3px'
+		ctx.strokeStyle='#999'
+		ctx.arc(200,200,180,0,d2r(360),false);
+		ctx.stroke();
+		//渲染所有大小时间,渲染文字
+		for ( var i = 0 ; i <= 60 ; i++){
+			if( i % 15 == 0  ){
+				dadi(i*6,0.88);
+			}else if( i % 5 == 0 ){
+				dadi(i*6,0.92);
+			}else if( i % 30 != 0 ) {
+				dadi(i*6,0.97);
+			}
+		}
+		for ( var i = 0 ; i <12 ; i++ ){
+			dadiFont( i*30,i, 0.80)
+		}
+
+
+		//画出小时
+		paintClock(h*15+m/60*15,80,'#000',7)
+		//画出分
+		paintClock(m*6+s/60*6,120,'#000',5)
+		//画出秒的走势
+		paintClock(s*6+ms/1000*6,160,'#f00',3)
+		//文字处理
+		ctx.beginPath();
+		ctx.font='30px 黑体';
+		ctx.textAlign = 'center';
+		ctx.textBaseline='middle';
+		ctx.fillText(addZero(h)+ ":" + addZero(m)+":"+ addZero(s),500,230);
+
+	}
+</script>
