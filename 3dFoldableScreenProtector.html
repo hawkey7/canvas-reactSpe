@@ -44,7 +44,7 @@ window.onload = function(){
 
 	/*取得一维点*/
 	var N1 = 5;// 多少个点
-	var N2 = 20;
+	var N2 = 50;
 	var oldArr=[] //尾巴数组
 	var aPos = [];
 	var g = 1;
@@ -56,7 +56,7 @@ window.onload = function(){
 			speedY:5
 		}
 	}
-	var jbCol = [255,255,100]
+	var jbCol = [0,255,100]
 	var colRate = 1 ;
 
 	// alert(  typeof aPos[0].speedY)
@@ -107,9 +107,14 @@ window.onload = function(){
 		//画线
 		ctx.beginPath()
 		// changeCol();
-		ctx.strokeStyle = 'white';
+		//添加rgb随即色渐变效果
+		var gradient = ctx.createLinearGradient(0 ,0,oC.width,oC.height);
+		gradient.addColorStop(0, 'rgb('+ (jbCol[0])  +','+ (jbCol[1])  +','+ (jbCol[2]) +')');
+		gradient.addColorStop(1, 'rgb('+  (jbCol[1]) +','+ (jbCol[0])  +','+ (jbCol[2]) +')');
+		ctx.strokeStyle = gradient;
 		ctx.moveTo( aPos[0].x , aPos[0].y );
 		for( var j = 1 ; j < N1 ; j++ ){
+
 			ctx.lineTo( aPos[j].x , aPos[j].y );
 		}
 		ctx.closePath();
@@ -145,8 +150,12 @@ window.onload = function(){
 			ctx.beginPath();
 			var opacity = (i/oldArr.length).toFixed(2);
 			// changeCol();
-			ctx.strokeStyle = 'rgba('+ (jbCol[0])  +','+ (jbCol[1])  +','+ (jbCol[2]) +','+ opacity +')';
-			
+			// ctx.strokeStyle = 'rgba('+ (jbCol[0])  +','+ (jbCol[1])  +','+ (jbCol[2]) +','+ opacity +')';
+			//添加rgba随即色渐变效果
+			var gradient = ctx.createLinearGradient(0 ,0,oC.width,oC.height);
+			gradient.addColorStop(0, 'rgba('+ (jbCol[0])  +','+ (jbCol[1])  +','+ (jbCol[2]) +','+ opacity +')');
+			gradient.addColorStop(1, 'rgba('+ (jbCol[1])  +','+  (jbCol[0]) +','+ (jbCol[2]) +','+ opacity +')');
+			ctx.strokeStyle = gradient;
 			ctx.moveTo( oldArr[i][0].x , oldArr[i][0].y );
 			for ( var j = 0 ; j < arr.length ; j++ ){
 				ctx.lineTo( oldArr[i][j].x , oldArr[i][j].y );
