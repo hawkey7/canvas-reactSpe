@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>666</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    html,body{
+      overflow: hidden;
+      text-align: center;
+      width: 100%;
+      height: 100%;
+    }
+    body{
+      background: #000;
+      /*text-align: center;*/
+    }
+    canvas{
+      background: #fff;
+      /*width:800px;
+      hegiht:400px;*/
+    }
+    span{
+      color:#fff;
+    }
+  </style>
+ <script>
+ function rand(n,m){
+ 	return Math.floor(Math.random()*(m-n+1) + n)
+ }
+ var arr = ["主人快带我走","~~~~(>_<)~~~~","我们都要哪里呢?","我想去吃酸菜鱼~~","累了走不动了...."] 
+window.onload = function () {
+  var oC = document.getElementById('c1');
+  var gd = oC.getContext('2d'); //画笔
+  oC.width = document.documentElement.clientWidth;
+  oC.height = document.documentElement.clientHeight;
+
+
+  var oImg = new Image();
+  oImg.src='imges/pic2476.png';
+  oImg.onload=function(){	
+  	//初始化妹子状态
+  	var x = oC.width/2; //妹子位置
+  	var y = oC.height/2; 
+  	var step = 10 ; //妹子步子大小
+  	var timer = null;
+  	backg() //渲染背景
+  	gd.drawImage(oImg,
+  	  0,0,32,48,
+  	  x,y,48,72
+  	);
+  	
+
+  	// 键盘控制移动
+  	var n = 0 ;
+  	document.onkeydown = function(e){
+  		if( e.keyCode >= 37 &&  e.keyCode <=40 && !timer){
+	  		console.log(e.keyCode)
+	  		step = 10;
+			switch( e.keyCode ){
+				case 40 : index = 0;
+						y+=step;
+						;break
+				case 38 : index = 3 ; 
+						y-=step;
+						;break; 
+				case 37 : index = 1 ;
+						x-=step;
+						;break
+				case 39 : index = 2 ;
+						x+=step;
+						;break;
+			}
+			backg()
+			speak( {x:x,y:y} );
+			gd.drawImage(oImg,
+			  32*n,48*index,32,48,
+			  x,y,48,72
+			)
+			n++;
+			if(n==4){
+			  n=0;
+			}
+		}
+  	}
+
+  	//鼠标点击移动
+  	oC.onclick = function(e){
+  		if( !timer ){
+	  		var pos = {
+	  			x:e.clientX,
+	  			y:e.clientY
+	  		}
+	  		if( e.clientX > x ){//点在人物右边,任务调用向右走函数
+	  			step = 10;
+	  			move("right", fn);
+	  			function fn(){
+					if( x+step >= pos.x ){
+		  				clearInterval(timer);
+		  				timer = null;
+		  				x = x+step;//终点左边变为起点坐标
+		  				callback2()
+	  				}
+	  			}
+	  		}else{//点在人物左边,任务向左走
+	  			step = -10;
+	  			move("left", fn);
+	  			function fn(){
+					if( x+step <= pos.x ){
+		  				clearInterval(timer);
+		  				timer = null;
+		  				x = x+step;
+		  				callback2();
+	  				}
+	  			}
+	  		}
+	  		function callback2(){
+	  			if( pos.y > y+72 ){//点击人物下方,人物往下走
+	  				step = 10;
+	  				move("bottom",function(){
+	  					console.log( y+step,pos.y )
+	  					if( y+step >= pos.y ){
+	  						clearInterval(timer);
+	  						timer = null;
+	  						y = y+step;//终点左边变为起点坐标
+	  						speak( {x:x,y:y} );
+	  					}
+	  				});
+	  			}else if( pos.y < y  ) {
+	  				step = -10;
+	  				move("top",function(){
+	  					// console.log( y+step,pos.y )
+	  					if( y+step <= pos.y ){
+	  						clearInterval(timer);
+	  						timer = null;
+	  						y = y+step;//终点左边变为起点坐标
+	  						speak( {x:x,y:y} );
+	  					}
+	  				});
+	  			}
+	  		}
+  		}
+  	}
+  	//运动函数
+    function move( dir ,callback){
+    	var n = 0 ;
+    	timer = setInterval(function(){
+	      backg()
+	      var index = 0;//设置面朝方向
+	      switch( dir ){
+	      	case 'bottom' : index = 0 ;
+	      					gd.drawImage(oImg,
+	      					  32*n,48*index,32,48,
+	      					  x,y+step,48,72
+	      					);break
+			case 'top' : index = 3 ; 
+							gd.drawImage(oImg,
+	      					  32*n,48*index,32,48,
+	      					  x,y+step,48,72
+	      					);break; //上下移动
+	      	case 'left' : index = 1 ;
+	      					gd.drawImage(oImg,
+	      					  32*n,48*index,32,48,
+	      					  x+step,y,48,72
+	      					);break
+	      	case 'right' : index = 2 ;
+	      					gd.drawImage(oImg,
+	      					  32*n,48*index,32,48,
+	      					  x+step,y,48,72
+	      					);
+	      					break;//左右移动
+	      	
+	      }
+	     // console.log(step)
+	      n++;
+	      if( dir == 'right' || dir == 'bottom'  ){
+	      	step+=10;
+	      }else{
+	      	step-=10;
+	      }
+	      if(n==4){
+	        n=0;
+	      }
+	      if( callback ){
+	      	callback();
+	      }
+	    },50);
+    }
+  };
+  	function speak(pos){
+  		gd.beginPath();
+  		gd.strokeRect(pos.x-40,pos.y-40,280,40)
+  		gd.font='25px 黑体'
+  		gd.textAlign='left';
+  		gd.textBaseline='top';
+  		gd.strokeText(arr[rand(0,4)],pos.x-40,pos.y-35)
+  	}
+  	function backg(){
+  		gd.clearRect(0,0,oC.width,oC.height);
+  		var  linear =  gd.createLinearGradient(0,0,oC.width,oC.height);
+  		linear.addColorStop(0,'white')
+  		linear.addColorStop(0.2,'#6875EA')
+  		linear.addColorStop(0.4,'#E468EB')
+  		linear.addColorStop(0.6,'#45F5F7')
+  		linear.addColorStop(0.8,'#F5E844')
+  		linear.addColorStop(1,'#F04F34')
+  		gd.fillStyle = linear;
+  		gd.fillRect(0,0,oC.width,oC.height)
+  	}
+}
+</script>
+</head>
+<body>
+
+<canvas  id="c1">
+  <span>您的浏览器版本太低</span>
+</canvas>
+
+</body>
+</html>
